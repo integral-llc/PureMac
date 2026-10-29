@@ -15,7 +15,7 @@ settings:
     ONLY_ACTIVE_ARCH: "NO"
     CODE_SIGN_IDENTITY: "Apple Development"
     CODE_SIGN_STYLE: "Automatic"
-    DEVELOPMENT_TEAM: "H3WXHVTP97"
+    DEVELOPMENT_TEAM: "Z427697N2Y"
     CODE_SIGN_ENTITLEMENTS: "PureMac/PureMac.entitlements"
     INFOPLIST_FILE: "PureMac/Info.plist"
     PRODUCT_BUNDLE_IDENTIFIER: "com.puremac.app"
