@@ -26,7 +26,8 @@ concurrency:
 env:
   APP_NAME: PureMac
   BUNDLE_ID: com.puremac.app
-  TEAM_ID: H3WXHVTP97
+  TEAM_ID: Z427697N2Y
+  SIGN_ID: "Developer ID Application: KARINA RATA (Z427697N2Y)"
   SCHEME: PureMac
   PROJECT: PureMac.xcodeproj
   CONFIGURATION: Release
@@ -147,7 +148,7 @@ jobs:
           done < <(security list-keychain -d user | sed -E 's/^[[:space:]]*"//; s/"[[:space:]]*$//')
           security list-keychain -d user -s "${KEYCHAIN_PATH}" "${CURRENT_KEYCHAINS[@]}"
           # Verify identity loaded
-          security find-identity -v -p codesigning "${KEYCHAIN_PATH}" | grep "Developer ID Application: Moamen Basel"
+          security find-identity -v -p codesigning "${KEYCHAIN_PATH}" | grep -F "${SIGN_ID}"
 
       - name: Run tests before signing
         run: |
@@ -171,7 +172,7 @@ jobs:
             ARCHS="arm64 x86_64" \
             ONLY_ACTIVE_ARCH=NO \
             CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="Developer ID Application: Moamen Basel (H3WXHVTP97)" \
+            CODE_SIGN_IDENTITY="${SIGN_ID}" \
             DEVELOPMENT_TEAM="${TEAM_ID}" \
             OTHER_CODE_SIGN_FLAGS="--timestamp --options=runtime" \
             archive | xcbeautify
@@ -179,13 +180,13 @@ jobs:
       - name: Export signed app
         run: |
           set -euo pipefail
-          cat > build/ExportOptions.plist <<'PLIST'
+          cat > build/ExportOptions.plist <<PLIST
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
           <dict>
             <key>method</key><string>developer-id</string>
-            <key>teamID</key><string>H3WXHVTP97</string>
+            <key>teamID</key><string>${TEAM_ID}</string>
             <key>signingStyle</key><string>manual</string>
             <key>signingCertificate</key><string>Developer ID Application</string>
           </dict>
@@ -253,7 +254,7 @@ jobs:
             --no-internet-enable \
             "${DMG}" \
             build/export/PureMac.app
-          codesign --sign "Developer ID Application: Moamen Basel (H3WXHVTP97)" --timestamp "${DMG}"
+          codesign --sign "${SIGN_ID}" --timestamp "${DMG}"
           codesign --verify --verbose=2 "${DMG}"
 
       - name: Notarize, staple, and validate DMG
@@ -396,7 +397,7 @@ jobs:
             codesign --verify --deep --strict --verbose=4 "${published_app}"
             xcrun stapler validate "${published_app}"
             spctl --assess --type execute --verbose=4 "${published_app}"
-            codesign -dvv "${published_app}" 2>&1 | grep -Fq 'TeamIdentifier=H3WXHVTP97'
+            codesign -dvv "${published_app}" 2>&1 | grep -Fq "TeamIdentifier=${TEAM_ID}"
             local app_archs app_version
             app_archs=$(lipo -archs "${published_app}/Contents/MacOS/PureMac")
             grep -qw arm64 <<< "${app_archs}"

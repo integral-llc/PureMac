@@ -3,7 +3,7 @@ set -euo pipefail
 
 VERSION="${1:?Usage: $0 <version> [notary_profile]}"
 NOTARY_PROFILE="${2:-AC_NOTARY}"
-SIGN_ID="Developer ID Application: Moamen Basel (H3WXHVTP97)"
+SIGN_ID="Developer ID Application: KARINA RATA (Z427697N2Y)"
 cd "$(dirname "$0")/.."
 
 SEMVER_RE='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'

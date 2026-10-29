@@ -18,8 +18,8 @@ set -euo pipefail
 
 VERSION="${1:?Usage: $0 <version> [notary_profile]}"
 NOTARY_PROFILE="${2:-AC_NOTARY}"
-TEAM_ID="H3WXHVTP97"
-SIGN_ID="Developer ID Application: Moamen Basel (${TEAM_ID})"
+TEAM_ID="Z427697N2Y"
+SIGN_ID="Developer ID Application: KARINA RATA (${TEAM_ID})"
 SCHEME="PureMac"
 PROJECT="PureMac.xcodeproj"
 APP="build/export/PureMac.app"
